@@ -1,0 +1,5 @@
+.idea
+img
+account/__pycache__/
+employee/__pycache__/
+product/__pycache__/
