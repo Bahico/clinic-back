@@ -1,5 +1,7 @@
-.idea
 img
 account/__pycache__/
 employee/__pycache__/
 product/__pycache__/
+/.idea/
+**/migrations/
+**/__pycache__/

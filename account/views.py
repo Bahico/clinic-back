@@ -48,7 +48,7 @@ class UserCreateView(APIView):
                 'code']
             url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={chat_id}&text={message}"
             requests.get(url).json()
-            token = Token.objects.create(user=User.objects.get())
+            token = Token.objects.create(user=User.objects.get(id=user.data['id']))
             return Response(token.key, status=status.HTTP_201_CREATED)
         print(user.errors)
         return Response("Not create!", status=status.HTTP_400_BAD_REQUEST)

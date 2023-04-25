@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-7&t4v_w-$+*o1*z+zd875!et^*jjx@8bg9d%irf&a6**63b#n)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["52.91.2.65"]
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     'product',
     'employee',
-    'account'
+    'account',
+    'new'
 ]
 
 MIDDLEWARE = [
@@ -130,9 +131,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
-    "http://127.0.0.1:9000",
-    "http://localhost:56668",
-    "http://52.91.2.65"
+    "http://127.0.0.1:8000",
+    "http://52.91.2.65",
+    "http://localhost:8000",
+    "http://gratitude-medical-clinic.uz",
+    "http://localhost:58835"
 ]
 
 

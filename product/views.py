@@ -7,6 +7,7 @@ from rest_framework import status
 from .pagination import StandardResultsSetPagination
 from product.models import Product
 from product.serializers import ProductSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
