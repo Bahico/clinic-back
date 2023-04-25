@@ -81,3 +81,7 @@ class BuyerView(APIView):
         if buyer:
             return Response(BuyerSerializer(buyer[0]).data)
         return Response('Not buyer!', status=status.HTTP_404_NOT_FOUND)
+
+
+class SiteAboutView(APIView):
+    pass

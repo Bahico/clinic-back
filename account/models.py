@@ -73,3 +73,9 @@ class UserSerializer(serializers.ModelSerializer):
 class Buyer(models.Model):
     phone_number = models.CharField(max_length=19)
     full_name = models.CharField(max_length=50)
+
+
+class SiteAbout(models.Model):
+    products = models.IntegerField(default=0)
+    employee = models.IntegerField(default=0)
+    news = models.IntegerField(default=0)
