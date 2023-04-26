@@ -6,5 +6,6 @@ urlpatterns = [
     path('login/', views.UserLogin.as_view()),
     path('buyer/', views.BuyerView.as_view()),
     path('buyer/<int:id>/', views.BuyerView.as_view()),
+    path('about/', views.SiteAboutView.as_view(), name='site-about'),
     path('', views.UserView.as_view()),
 ]

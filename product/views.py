@@ -7,17 +7,16 @@ from rest_framework import status
 from .pagination import StandardResultsSetPagination
 from product.models import Product
 from product.serializers import ProductSerializer
-from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
 
 class ProductView(APIView):
     permission_classes = ()
+    serializer_class = ProductSerializer
 
-    @staticmethod
-    def post(request: rest_framework.request.Request):
-        post = ProductSerializer(data=request.data)
+    def post(self, request: rest_framework.request.Request):
+        post = self.serializer_class(data=request.data)
         if post.is_valid():
             post.save()
             return Response(post.data, status=status.HTTP_201_CREATED)
@@ -25,11 +24,10 @@ class ProductView(APIView):
         print(request.data)
         return Response("Not create!", status=status.HTTP_400_BAD_REQUEST)
 
-    @staticmethod
-    def get(request, id):
+    def get(self, request, id):
         product = Product.objects.filter(id=id)
         if product:
-            return Response(ProductSerializer(product[0], many=False).data)
+            return Response(self.serializer_class(product[0], many=False).data)
         return Response("Not product", status=status.HTTP_404_NOT_FOUND)
 
     @staticmethod
@@ -37,15 +35,19 @@ class ProductView(APIView):
         Product.objects.filter(id=id).delete()
         return Response("Deleted!")
 
-    @staticmethod
-    def put(request: rest_framework.request.Request, id: int):
+    def put(self, request: rest_framework.request.Request, id: int):
         post = Product.objects.filter(id=id)
         if post:
-            serializer = ProductSerializer(post[0], data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response("Not product!", status=status.HTTP_400_BAD_REQUEST)
+            post = post[0]
+            post.title = request.data['name']
+            post.description = request.data['description']
+            if type(request.data['image']) != str:
+                print(request.data['image'])
+                post.image = request.data['image']
+            post.price = request.data['price']
+            post.save()
+            return Response(self.serializer_class(post, many=False).data, status=status.HTTP_201_CREATED)
+        return Response("Not product!", status=status.HTTP_404_NOT_FOUND)
 
 
 class ProductListView(ListAPIView, APIView):

@@ -8,8 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 
-from account.models import UserSerializer, User, Buyer
-from .serializers import BuyerSerializer
+from account.models import UserSerializer, User, Buyer, SiteAbout
+from employee.models import Employee
+from new.models import NewModel
+from product.models import Product
+from .serializers import BuyerSerializer, AboutSerializer
 
 
 # Create your views here.
@@ -84,4 +87,20 @@ class BuyerView(APIView):
 
 
 class SiteAboutView(APIView):
-    pass
+    serializer_class = AboutSerializer
+    model = SiteAbout.objects.all()
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request: rest_framework.request.Request):
+        return Response(self.serializer_class(self.model[0], many=False).data)
+
+    def put(self, request):
+        news = NewModel.objects.all()
+        products = Product.objects.all()
+        employee = Employee.objects.all()
+        self.model = self.model[0]
+        self.model.news = len(news)
+        self.model.products = len(products)
+        self.model.employee = len(employee)
+        self.model.save()
+        return Response(self.serializer_class(self.model, many=False).data)
