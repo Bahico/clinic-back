@@ -3,8 +3,9 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
 from product.pagination import StandardResultsSetPagination
+from rest_framework.permissions import IsAuthenticated
+
 
 from .serializers import NewSerializer
 from .models import NewModel
@@ -16,7 +17,7 @@ from .models import NewModel
 class NewCreateView(APIView):
     serializer_class = NewSerializer
     model = NewModel.objects.all()
-    permission_classes = ()
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request: rest_framework.request.Request):
         serializer = self.serializer_class(data=request.data)
@@ -29,11 +30,17 @@ class NewCreateView(APIView):
     def put(self, request: rest_framework.request.Request, id: int):
         model = self.model.filter(id=id)
         if model:
-            serializer = self.serializer_class(model[0], data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            model = model[0]
+            model.title = request.data['title']
+            model.description = request.data['description']
+            if model.image and type(request.data['image']) != str:
+                model.image = request.data['image']
+            if model.video and type(request.data['video']) != str:
+                model.video = request.data['video']
+            if type(request.data['pdf']) != str:
+                model.pdf = request.data['pdf']
+            model.save()
+            return Response(self.serializer_class(model, many=False).data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request: rest_framework.request.Request, id: int):

@@ -66,6 +66,7 @@ class UserLogin(APIView):
         if user and user[0].status:
             token = Token.objects.get(user_id=user[0].id)
             return Response(token.key, status=status.HTTP_200_OK)
+        print(user)
         return Response("Not user!", status=status.HTTP_404_NOT_FOUND)
 
 
