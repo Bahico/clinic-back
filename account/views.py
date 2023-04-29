@@ -93,6 +93,11 @@ class SiteAboutView(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request: rest_framework.request.Request):
+        if not self.model:
+            serializer = self.serializer_class(data={'products': 0, 'employee': 0, 'news': 0})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
         return Response(self.serializer_class(self.model[0], many=False).data)
 
     def put(self, request):
