@@ -39,7 +39,7 @@ class ProductView(APIView):
         post = Product.objects.filter(id=id)
         if post:
             post = post[0]
-            post.title = request.data['name']
+            post.name = request.data['name']
             post.description = request.data['description']
             if type(request.data['image']) != str:
                 print(request.data['image'])
