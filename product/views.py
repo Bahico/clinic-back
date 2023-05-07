@@ -42,8 +42,9 @@ class ProductView(APIView):
             post.name = request.data['name']
             post.description = request.data['description']
             if type(request.data['image']) != str:
-                print(request.data['image'])
                 post.image = request.data['image']
+            if type(request.data['pdf']) != str:
+                post.pdf = request.data['pdf']
             post.price = request.data['price']
             post.save()
             return Response(self.serializer_class(post, many=False).data, status=status.HTTP_201_CREATED)
