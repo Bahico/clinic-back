@@ -5,8 +5,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from .pagination import StandardResultsSetPagination
-from product.models import Product
-from product.serializers import ProductSerializer
+from product.models import Product, Video
+from product.serializers import ProductSerializer, VideoSerializer
 
 
 # Create your views here.
@@ -59,3 +59,25 @@ class ProductListView(ListAPIView, APIView):
     def post(self, request: rest_framework.request.Request, *args, **kwargs):
         self.queryset = Product.objects.filter(name__contains=request.data['name'])
         return self.list(request, *args, **kwargs)
+
+
+class VideoView(APIView):
+    serializer_class = VideoSerializer
+    permission_classes = ()
+
+    def post(self, request: rest_framework.request.Request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request: rest_framework.request.Request):
+        return Response(self.serializer_class(Video.objects.all(), many=True).data)
+
+    def delete(self, request: rest_framework.request.Request, id: int):
+        model = Video.objects.filter(id=id)
+        if model:
+            model.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -14,3 +15,7 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'products'
+
+
+class Video(models.Model):
+    video = models.FileField()

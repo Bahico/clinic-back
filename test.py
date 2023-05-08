@@ -65,3 +65,6 @@ func('Bahodirjon')
 #     Bu bajariladigan fayl va barcha modullarni tartibga solish
 #     uchun bizda Pythonda Package deb nomlangan tushuncha mavjud
 # """
+
+
+

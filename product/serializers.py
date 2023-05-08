@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from account.models import SiteAbout
-from product.models import Product
+from product.models import Product, Video
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -13,4 +13,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
+        fields = '__all__'
+
+
+class VideoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Video
         fields = '__all__'
