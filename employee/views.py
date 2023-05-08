@@ -43,16 +43,20 @@ class EmployeeView(ListAPIView, APIView):
         Employee.objects.filter(id=id).delete()
         return Response("Deleted!")
 
-    @staticmethod
-    def put(request: rest_framework.request.Request, id: int):
+    def put(self, request: rest_framework.request.Request, id: int):
         employee = Employee.objects.filter(id=id)
-        print(True)
         if employee:
-            serializer = EmployeeSerializer(employee[0], data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            print(serializer.errors)
+            employee = employee[0]
+            if type(request.data['certificate']) != str:
+                employee.certificate = request.data['certificate']
+            employee.age = request.data['age']
+            employee.description = request.data['description']
+            employee.first_name = request.data['first_name']
+            employee.last_name = request.data['last_name']
+            if type(request.data['image']) != str:
+                employee.image = request.data['image']
+            employee.save()
+            return Response(self.serializer_class(employee, many=False).data, status=status.HTTP_201_CREATED)
         return Response("Not employee!", status=status.HTTP_400_BAD_REQUEST)
 
 

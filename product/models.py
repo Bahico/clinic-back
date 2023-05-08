@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
+
 
 
 # Create your models here.
@@ -9,6 +11,7 @@ class Product(models.Model):
     description = models.TextField()
     image = models.ImageField(upload_to='product/')
     price = models.IntegerField()
+    pdf = models.FileField(validators=[FileExtensionValidator(['pdf'])])
 
     def __str__(self):
         return self.name

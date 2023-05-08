@@ -79,3 +79,8 @@ class SiteAbout(models.Model):
     products = models.IntegerField(default=0)
     employee = models.IntegerField(default=0)
     news = models.IntegerField(default=0)
+
+
+class Location(models.Model):
+    longitude = models.CharField(max_length=30)
+    latitude = models.CharField(max_length=30)

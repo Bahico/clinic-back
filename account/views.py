@@ -8,11 +8,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
 
-from account.models import UserSerializer, User, Buyer, SiteAbout
+from account.models import UserSerializer, User, Buyer, SiteAbout, Location
 from employee.models import Employee
 from new.models import NewModel
 from product.models import Product
-from .serializers import BuyerSerializer, AboutSerializer
+from .serializers import BuyerSerializer, AboutSerializer, LocationSerializer
 
 
 # Create your views here.
@@ -110,3 +110,28 @@ class SiteAboutView(APIView):
         self.model.employee = len(employee)
         self.model.save()
         return Response(self.serializer_class(self.model, many=False).data)
+
+
+class LocationView(APIView):
+    serializer_class = LocationSerializer
+    permission_classes = ()
+
+    def post(self, request: rest_framework.request.Request):
+        model = Location.objects.all()
+        if not model:
+            print(request.data)
+            serializer = self.serializer_class(data=request.data, many=False)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        model[0].longitude = request.data['longitude']
+        model[0].latitude = request.data['latitude']
+        model[0].save()
+        return Response(self.serializer_class(model[0], many=False).data, status=status.HTTP_201_CREATED)
+
+    def get(self, request: rest_framework.request.Request):
+        model = Location.objects.all()
+        if model:
+            return Response(self.serializer_class(model[0], many=False).data)
+        return Response(status=status.HTTP_404_NOT_FOUND)
