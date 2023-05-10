@@ -1,9 +1,15 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
 
-
-
 # Create your models here.
+
+from django.core.exceptions import ValidationError
+
+
+def file_size(value):  # add this to some file where you can import it from
+    limit = 10 * 1024 * 1024
+    if value.size > limit:
+        raise ValidationError('File too large. Size should not exceed 2 MiB.')
 
 
 class Product(models.Model):
@@ -21,4 +27,4 @@ class Product(models.Model):
 
 
 class Video(models.Model):
-    video = models.FileField()
+    video = models.FileField(upload_to='about_video', validators=[file_size])

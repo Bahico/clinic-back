@@ -3,7 +3,7 @@ import requests
 
 import rest_framework.request
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token
@@ -36,7 +36,8 @@ class UserView(APIView):
 
 
 class UserCreateView(APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
 
     @staticmethod
     def post(request: rest_framework.request.Request):
@@ -58,7 +59,8 @@ class UserCreateView(APIView):
 
 
 class UserLogin(APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
 
     @staticmethod
     def post(request: rest_framework.request.Request):
@@ -114,7 +116,8 @@ class SiteAboutView(APIView):
 
 class LocationView(APIView):
     serializer_class = LocationSerializer
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
 
     def post(self, request: rest_framework.request.Request):
         model = Location.objects.all()

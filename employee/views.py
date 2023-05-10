@@ -2,7 +2,7 @@ import rest_framework.request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from .models import Employee
@@ -13,7 +13,8 @@ from product.pagination import StandardResultsSetPagination
 # Create your views here.
 
 class EmployeeView(ListAPIView, APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
     queryset = []
     serializer_class = EmployeeSerializer
     pagination_class = StandardResultsSetPagination
@@ -61,7 +62,8 @@ class EmployeeView(ListAPIView, APIView):
 
 
 class EmployeeHomeView(ListAPIView, APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
     queryset = []
     serializer_class = EmployeeSerializer
     pagination_class = StandardResultsSetPagination

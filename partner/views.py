@@ -2,7 +2,7 @@ import rest_framework.views
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 from partner.models import PartnerModel
@@ -15,7 +15,8 @@ from partner.serializers import PartnerSerializer
 class PartnerView(APIView):
     serializer_class = PartnerSerializer
     model = PartnerModel.objects.all()
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
 
     def get(self, request: rest_framework.views.Request, id: int | None = None):
         if not id:

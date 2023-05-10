@@ -2,6 +2,7 @@ import rest_framework.request
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from .pagination import StandardResultsSetPagination
@@ -12,7 +13,8 @@ from product.serializers import ProductSerializer, VideoSerializer
 # Create your views here.
 
 class ProductView(APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
     serializer_class = ProductSerializer
 
     def post(self, request: rest_framework.request.Request):
@@ -52,7 +54,8 @@ class ProductView(APIView):
 
 
 class ProductListView(ListAPIView, APIView):
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
     queryset = []
     serializer_class = ProductSerializer
     pagination_class = StandardResultsSetPagination
@@ -64,16 +67,19 @@ class ProductListView(ListAPIView, APIView):
 
 class VideoView(APIView):
     serializer_class = VideoSerializer
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
 
     def post(self, request: rest_framework.request.Request):
+        print(request.data)
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request: rest_framework.request.Request):
+        print(Video.objects.all())
         return Response(self.serializer_class(Video.objects.all(), many=True).data)
 
     def delete(self, request: rest_framework.request.Request, id: int):

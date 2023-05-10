@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from product.pagination import StandardResultsSetPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 
 from .serializers import NewSerializer
@@ -54,7 +54,8 @@ class NewCreateView(APIView):
 class NewView(ListAPIView, APIView):
     model = NewModel.objects.all()
     serializer_class = NewSerializer
-    permission_classes = ()
+    authentication_classes = ()
+    permission_classes = (AllowAny,)
     queryset = []
     pagination_class = StandardResultsSetPagination
 
