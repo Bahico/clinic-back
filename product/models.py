@@ -15,7 +15,7 @@ def file_size(value):  # add this to some file where you can import it from
 class Product(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='product/')
+    image = models.FileField(validators=[FileExtensionValidator(['jpeg', 'png', 'mpeg'])])
     price = models.IntegerField()
     pdf = models.FileField(validators=[FileExtensionValidator(['pdf'])])
 
@@ -27,4 +27,4 @@ class Product(models.Model):
 
 
 class Video(models.Model):
-    video = models.FileField(upload_to='about_video', validators=[file_size])
+    video = models.TextField()

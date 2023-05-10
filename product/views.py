@@ -79,7 +79,6 @@ class VideoView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request: rest_framework.request.Request):
-        print(Video.objects.all())
         return Response(self.serializer_class(Video.objects.all(), many=True).data)
 
     def delete(self, request: rest_framework.request.Request, id: int):
