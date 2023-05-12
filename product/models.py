@@ -27,4 +27,4 @@ class Product(models.Model):
 
 
 class Video(models.Model):
-    video = models.TextField()
+    video = models.FileField(upload_to='about_video', validators=[file_size])
